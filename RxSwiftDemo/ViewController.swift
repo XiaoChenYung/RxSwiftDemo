@@ -21,8 +21,9 @@ class ViewController: UIViewController {
 //        create()
 //        range()
 //        repeatElement()
-        generate()
-        
+//        generate()
+//        deferred()
+        doOn()
     }
 
     override func didReceiveMemoryWarning() {
@@ -134,12 +135,55 @@ class ViewController: UIViewController {
         
     }
     
+    func deferred() -> () {
+        let disposeBag = DisposeBag()
+        var count = 1
+        
+        let deferredSequence = Observable<String>.deferred {
+            print("creat \(count)")
+            count += 1
+            
+            return Observable.create { observer in
+                observer.onNext("Apple")
+                observer.onNext("Nike")
+                observer.onNext("Google")
+                return Disposables.create()
+            }
+        }
+        
+        deferredSequence.subscribe(onNext: {
+            print($0)
+        })
+        .disposed(by: disposeBag)
+        
+        deferredSequence.subscribe(onNext: {
+            print($0)
+        })
+        .disposed(by: disposeBag)
+        
+        deferredSequence.subscribe(onNext: {
+            print($0)
+        })
+        .disposed(by: disposeBag)
+        
+    }
     
-    
-    
-    
-    
-    
+    func doOn() -> () {
+        let disposeBag = DisposeBag()
+        Observable<String>.of("A","B","C","D")
+        .do(onNext: {
+            print("Intercepted:", $0)
+        }, onError: {
+            print("Intercepted error:", $0)
+        }, onCompleted: { 
+            print("Complete")
+        })
+        .subscribe(onNext: {
+            print($0)
+        })
+        .disposed(by: disposeBag)
+        
+    }
     
     
     
