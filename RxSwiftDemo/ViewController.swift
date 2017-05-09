@@ -16,6 +16,10 @@ class ViewController: UIViewController {
 //        empty()
 //        never()
 //        just()
+//        of()
+//        from()
+//        create()
+        range()
         
     }
 
@@ -52,7 +56,78 @@ class ViewController: UIViewController {
         .disposed(by: disposeBag)
         
     }
+    
+    func of() -> () {
+        let disposeBag = DisposeBag()
+        Observable<String>.of("Google","Nike","Apple")
+            .subscribe(onNext: {event in
+                print(event)
+            })
+        .disposed(by: disposeBag)
+        
+    }
+    
+    func from() -> () {
+        let disposeBag = DisposeBag()
+        Observable<String>.from(["Google","Nike","Apple"])
+        .subscribe(onNext: {
+                print($0)
+            })
+        .disposed(by: disposeBag)
+        
+    }
+    
+    func create() -> () {
+        let disposeBag = DisposeBag()
+        
+        let myJust = { (element: String) -> Observable<String> in
+            return Observable.create {observer in
+                observer.on(.next(element))
+                observer.on(.completed)
+                return Disposables.create()
+            }
+        }
+        
+        
+        myJust("Apple")
+        .subscribe (onNext: {
+                print($0)
+        })
+        .disposed(by: disposeBag)
+        
+    }
 
+    func range() -> () {
+        let disposeBag = DisposeBag()
+        Observable<Int>.range(start: 1, count: 10)
+        .subscribe {
+            print($0)
+        }
+        .disposed(by: disposeBag)
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 }
 
