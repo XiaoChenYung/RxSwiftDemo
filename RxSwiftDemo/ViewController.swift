@@ -19,7 +19,9 @@ class ViewController: UIViewController {
 //        of()
 //        from()
 //        create()
-        range()
+//        range()
+//        repeatElement()
+        generate()
         
     }
 
@@ -107,9 +109,30 @@ class ViewController: UIViewController {
         
     }
     
+    func repeatElement() -> () {
+        let disposeBag = DisposeBag()
+        Observable.repeatElement("Apple")
+        .take(3000000)
+        .subscribe(onNext: {
+            print($0)
+        })
+        .disposed(by: disposeBag)
+        
+    }
     
-    
-    
+    func generate() -> () {
+        let disposeBag = DisposeBag()
+        Observable.generate(
+                            initialState: 0,
+                            condition:{ $0 < 3},
+                            iterate: {$0 + 1}
+        )
+        .subscribe(onNext: {
+                print($0)
+        })
+        .disposed(by: disposeBag)
+        
+    }
     
     
     
