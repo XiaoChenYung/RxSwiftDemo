@@ -7,17 +7,50 @@
 //
 
 import UIKit
+import RxSwift
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+//        empty()
+//        never()
+//        just()
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func never() -> () {
+        let disposeBag = DisposeBag()
+        Observable<String>.never()
+        .subscribe { _ in
+            print("nevwer")
+        }
+        .disposed(by: disposeBag)
+        
+    }
+    
+    func empty() -> () {
+        let disposeBag = DisposeBag()
+        Observable<Int>.empty()
+        .subscribe { event in
+            print(event)
+            }
+        .disposed(by: disposeBag)
+    }
+    
+    func just() -> () {
+        let disposeBag = DisposeBag()
+        Observable<Int>.just(2)
+        .subscribe { event in
+            print(event)
+        }
+        .disposed(by: disposeBag)
+        
     }
 
 
